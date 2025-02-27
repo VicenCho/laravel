@@ -27,7 +27,7 @@ Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
 Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom');
 Route::post('custom-login', [AuthController::class, 'customlogin'])->name('custom.login');
-Route::view('/loginsuccess', 'loginsuccess');
+Route::view('/loginsuccess', 'loginsuccess')->name('loginsuccess');
 Route::get('logout', [AuthController::class, 'LogOut'])->name('logout');
 
 

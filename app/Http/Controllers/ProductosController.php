@@ -7,18 +7,16 @@ use Illuminate\Support\Facades\DB;
 
 class ProductosController extends Controller
 {
-    public function insertandoproducto()
+    public function insertandoproducto($mensaje = null)
     {
-        return view('producto.insertproducto');
+        return view('producto.insertproducto', compact('mensaje'));
     }
     public function buscandoproducto($mensaje = null, $producto = null)
     {
         if ($producto == null) {
-           // $producto = DB::table('tbl_productos')->get(); en caso de mostrar toda la tabla
-            return view('producto.searchproducto', compact('mensaje', 'producto'));
-        } else {
-            return view('producto.searchproducto', compact('mensaje', 'producto'));
+            $producto = DB::table('tbl_productos')->get(); // Obtener todos los productos
         }
+        return view('producto.searchproducto', compact('mensaje', 'producto'));
     }
 
     public function InsertProducto(Request $request)
@@ -34,18 +32,20 @@ class ProductosController extends Controller
             'required' => 'El nombre del producto es requerido',
             'string' => 'El nombre del producto debe ser un texto',
             'min' => 'El nombre del producto debe tener al menos 1',
-            'int' => 'el precio del producto debe ser numerico'
+            'int' => 'el precio del producto debe ser numerico',
+            'boolean' => 'El numero debe ser entero'
         ];
         $this->validate($request, $rules, $messages);
-        if ($this->buscar($request->VCH_NOMBRE_PRODUCTO == 0)) {
+        if ($this->buscar($request->name == 0)) {
             DB::table('tbl_productos')->insert([
                 'VCH_NOMBRE_PRODUCTO' => $request->name,
                 'INT_PRECIO_PRODUCTO' => $request->PrecPro,
                 'INT_CANTIDAD_PRODUCTO' => $request->CantPro,
                 'VCH_CATEGORIA_PRODUCTO' => $request->CatePro,
             ]);
-            $mensaje = "producto registrado";
-            return redirect()->route('insertandoproducto');
+            return redirect()->route('loginsuccess')->with('success', 'Producto registrado correctamente');
+        } else {
+            return redirect()->route('insertandoproducto')->with('error', 'El producto ya existe');
         }
     }
 
@@ -69,7 +69,7 @@ class ProductosController extends Controller
         $messages = [
             'required' => 'Ingrese el nombre del producto a buscar',
             'string' => 'El nombre del producto debe ser una cadena de texto'
-            
+
         ];
         $this->validate($request, $rules, $messages);
         $argumentos = ["VCH_NOMBRE_PRODUCTO"];
@@ -97,7 +97,7 @@ class ProductosController extends Controller
     ];
     $this->validate($request,$rules,$messages);
     $update = DB::table('tbl_productos')->where('ID_PRODUCTO','=', $id)->update($request->except(['_token','_method']));
-    return view('producto.SearchProducto');
+    return redirect()->route('buscandoproducto');
     }
 
     public function show($id){
@@ -107,6 +107,6 @@ class ProductosController extends Controller
 
     public function destroy($id){
         $id=DB::table('tbl_productos')->where('ID_PRODUCTO','=', $id)->delete();
-        return view('producto.SearchProducto');
+        return redirect()->route('buscandoproducto');
     }
 }

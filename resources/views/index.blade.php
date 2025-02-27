@@ -25,6 +25,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+            <a class="navbar-brand mr-auto" href="{{ route('loginsuccess') }}">PositronX</a>
             <ul class="navbar-nav ml-auto">
                 @guest
                     <li class="nav-item">
