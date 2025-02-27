@@ -1,13 +1,8 @@
-body {
+ body {
     background-color: #1c1c1c;
-    color: #ffffff;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+
 }
-h1 {
+/* h1 {
     font-size: 4rem;
     margin-bottom: 2rem;
 }
@@ -16,4 +11,4 @@ h1 {
     padding: 3rem;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-}
+}*/
